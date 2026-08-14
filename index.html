@@ -412,3 +412,368 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAME STORE - ระบบขายไอดีเกมอัตโนมัติ 24 ชม.</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { bg: '#0b0e14', card: '#151822', border: '#222736', accent: '#6366f1', neon: '#00ffaa' }
+                    },
+                    fontFamily: { kanit: ['Kanit', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Kanit', sans-serif; background-color: #0b0e14; color: #f3f4f6; }
+        .gradient-text { background: linear-gradient(135deg, #a855f7, #6366f1, #00ffaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-[#151822]/90 backdrop-blur-md border-b border-[#222736]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-wider text-white">GAME <span class="text-indigo-400">STORE</span></span>
+                    <span class="block text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Auto-Delivery System
+                    </span>
+                </div>
+            </a>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-md relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ค้นหาไอดีเกม, สกินแรร์..." 
+                    class="w-full bg-[#0b0e14] border border-[#222736] rounded-full pl-11 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500 text-gray-200">
+            </div>
+
+            <!-- User Auth / Profile Area -->
+            <div class="flex items-center gap-3">
+                <!-- Admin Button (Hidden by default) -->
+                <button id="adminNavBtn" onclick="openAdminModal()" class="hidden bg-amber-500/20 border border-amber-500/50 text-amber-400 text-xs px-3 py-2 rounded-xl hover:bg-amber-500/30 transition flex items-center gap-1 font-bold">
+                    <i class="fa-solid fa-user-gear"></i> หลังบ้าน Admin
+                </button>
+
+                <!-- Guest Actions -->
+                <div id="guestNav" class="flex items-center gap-2">
+                    <button onclick="openAuthModal('login')" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-2">เข้าสู่ระบบ</button>
+                    <button onclick="openAuthModal('register')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/30 transition">สมัครสมาชิก</button>
+                </div>
+
+                <!-- Logged In User Actions -->
+                <div id="userNav" class="hidden flex items-center gap-2">
+                    <button onclick="openHistoryModal()" class="bg-[#222736] hover:bg-[#2e3548] text-xs text-gray-200 px-3 py-2 rounded-xl border border-gray-700 flex items-center gap-1">
+                        <i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> ประวัติการซื้อ
+                    </button>
+                    <div class="text-xs text-emerald-400 font-mono bg-[#0b0e14] px-3 py-1.5 rounded-lg border border-[#222736]" id="userDisplayEmail">user@mail.com</div>
+                    <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <!-- Banner Hero -->
+        <div class="bg-gradient-to-r from-[#151822] via-[#1a1f2c] to-[#151822] border border-[#222736] rounded-3xl p-6 sm:p-10 mb-8 relative overflow-hidden">
+            <div class="max-w-xl">
+                <span class="inline-block bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs px-3 py-1 rounded-full mb-3"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ระบบความปลอดภัยระดับ AES-256</span>
+                <h1 class="text-2xl sm:text-4xl font-extrabold text-white mb-2">ซื้อขายไอดีเกม <span class="gradient-text">ส่งมอบอัตโนมัติ 24 ชม.</span></h1>
+                <p class="text-xs sm:text-sm text-gray-400 mb-4">เข้าสู่ระบบ -> เลือกไอดีที่ต้องการ -> สแกนจ่าย -> รับ Username/Password บนหน้าจอทันที</p>
+            </div>
+        </div>
+
+        <!-- Product Catalog Header -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-6 bg-indigo-500 rounded-full"></span> รายการไอดีเกมพร้อมส่งมอบ
+            </h2>
+        </div>
+
+        <!-- Products List -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+            <!-- Product Item 1 -->
+            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300">
+                <div class="relative aspect-video">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">VALORANT</span>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-base font-bold text-white mb-1">Valorant Radiant Ready Account</h3>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">สกิน Kuronami + Vandal Prime การันตีสะอาด เปลี่ยนเมลได้ทันที</p>
+                    <div class="flex items-center justify-between border-t border-[#222736] pt-3">
+                        <span class="text-lg font-bold text-emerald-400">฿ 290</span>
+                        <button onclick="startCheckout('VALORANT - Radiant Ready', 290, 'VAL-8902')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-4 py-2 rounded-xl transition">ซื้อทันที</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Item 2 -->
+            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300">
+                <div class="relative aspect-video">
+                    <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">ROBLOX</span>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-base font-bold text-white mb-1">Blox Fruits Max Level + VIP Pass</h3>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">เลเวลตัน ผลตื่นเต็มขั้น ดาบคู่หมัดการันตี มี Gamepass VIP</p>
+                    <div class="flex items-center justify-between border-t border-[#222736] pt-3">
+                        <span class="text-lg font-bold text-emerald-400">฿ 180</span>
+                        <button onclick="startCheckout('Blox Fruits Max Level', 180, 'RBX-3311')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-4 py-2 rounded-xl transition">ซื้อทันที</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 1. AUTH MODAL (LOGIN / REGISTER) -->
+    <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#151822] border border-[#222736] w-full max-w-sm rounded-2xl p-6 relative">
+            <button onclick="closeModal('authModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="flex border-b border-[#222736] mb-5">
+                <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500">เข้าสู่ระบบ</button>
+                <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2 text-sm font-bold text-gray-400 border-b-2 border-transparent">สมัครสมาชิก</button>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">อีเมล (Email)</label>
+                    <input type="email" id="authEmail" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">รหัสผ่าน (Password)</label>
+                    <input type="password" id="authPassword" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg transition">เข้าสู่ระบบ</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. PAYMENT & AUTO-DELIVERY MODAL -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#151822] border border-[#222736] w-full max-w-md rounded-2xl p-6 relative">
+            <button onclick="closeModal('checkoutModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+
+            <!-- Step 1: Pay -->
+            <div id="payStep">
+                <h3 class="text-base font-bold text-white mb-1">ชำระเงินและรับไอดี</h3>
+                <p id="payItemTitle" class="text-xs text-indigo-400 font-medium mb-3">-</p>
+                <div class="bg-[#0b0e14] border border-[#222736] p-4 rounded-xl text-center mb-4">
+                    <span class="text-xs text-gray-400 block mb-1">สแกน QR Code PromptPay</span>
+                    <div class="w-36 h-36 bg-white mx-auto my-2 rounded-lg p-2 flex items-center justify-center text-black font-mono text-[10px] flex-col">
+                        <i class="fa-solid fa-qrcode text-5xl mb-1"></i>
+                        <span>PROMPTPAY QR</span>
+                    </div>
+                    <span id="payPrice" class="text-2xl font-extrabold text-emerald-400">฿ 0</span>
+                </div>
+                <button onclick="confirmPayment()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check"></i> ยืนยันการชำระเงิน (จำลองการรับไอดี)
+                </button>
+            </div>
+
+            <!-- Step 2: Account Dispensed -->
+            <div id="resultStep" class="hidden text-center">
+                <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-2 text-xl">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-base font-bold text-white mb-1">ส่งมอบรหัสสำเร็จ!</h3>
+                <p class="text-xs text-gray-400 mb-4">คุณสามารถก็อปปี้รหัสเข้าใช้งานได้ทันที</p>
+                <div class="bg-[#0b0e14] border border-[#222736] rounded-xl p-4 text-left font-mono text-xs mb-4 space-y-2">
+                    <div>
+                        <span class="text-gray-500 text-[10px]">USERNAME:</span>
+                        <div class="text-emerald-400 font-bold flex justify-between items-center" id="dispenseUser">game_user_99</div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-[10px]">PASSWORD:</span>
+                        <div class="text-emerald-400 font-bold flex justify-between items-center" id="dispensePass">Pass_2026_Secured</div>
+                    </div>
+                </div>
+                <button onclick="closeModal('checkoutModal')" class="w-full bg-[#222736] text-white text-xs py-2 rounded-xl">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ADMIN BACKEND MODAL -->
+    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#151822] border border-[#222736] w-full max-w-lg rounded-2xl p-6 relative">
+            <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-base font-bold text-amber-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> ระบบจัดการหลังบ้าน (Admin Panel)</h3>
+            
+            <form onsubmit="addStockItem(event)" class="space-y-3">
+                <p class="text-xs font-bold text-gray-300">เติม Stock รหัสไอดีเกมเข้าระบบ:</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="addGameTitle" placeholder="ชื่อเกม (เช่น Valorant)" required class="bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
+                    <input type="number" id="addPrice" placeholder="ราคา (บาท)" required class="bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
+                </div>
+                <input type="text" id="addAccUser" placeholder="Username / Email ของไอดีเกม" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
+                <input type="text" id="addAccPass" placeholder="Password ของไอดีเกม" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-2 rounded-xl text-xs transition">บันทึกสต็อกเข้าฐานข้อมูล</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. MY HISTORY MODAL -->
+    <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#151822] border border-[#222736] w-full max-w-md rounded-2xl p-6 relative">
+            <button onclick="closeModal('historyModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-base font-bold text-white mb-4"><i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> ประวัติการสั่งซื้อของคุณ</h3>
+            <div id="historyList" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                <div class="bg-[#0b0e14] p-3 rounded-xl border border-[#222736] text-xs">
+                    <span class="text-gray-400 block text-[10px]">ไอดีล่าสุดที่ซื้อ:</span>
+                    <p class="font-bold text-white">Valorant Radiant Ready</p>
+                    <p class="font-mono text-emerald-400 text-[11px] mt-1">User: val_account_8922 | Pass: Pass#2026_Secure</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#151822] border-t border-[#222736] py-6 text-center text-xs text-gray-500">
+        © 2026 GAME STORE. Automated Platform with Supabase & Vercel.
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // -------------------------------------------------------------
+        // CONFIG SUPABASE (ใส่ URL และ Anon Key ของคุณตรงนี้)
+        // -------------------------------------------------------------
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL'; 
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        let supabaseClient = null;
+
+        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+
+        let currentUser = null;
+        let authMode = 'login';
+        let currentCheckoutItem = null;
+
+        // AUTH SYSTEM LOGIC
+        function openAuthModal(mode) {
+            switchAuthTab(mode);
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function switchAuthTab(mode) {
+            authMode = mode;
+            if(mode === 'login') {
+                document.getElementById('tabLogin').className = "flex-1 pb-2 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500";
+                document.getElementById('tabRegister').className = "flex-1 pb-2 text-sm font-bold text-gray-400 border-b-2 border-transparent";
+                document.getElementById('authSubmitBtn').innerText = "เข้าสู่ระบบ";
+            } else {
+                document.getElementById('tabRegister').className = "flex-1 pb-2 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500";
+                document.getElementById('tabLogin').className = "flex-1 pb-2 text-sm font-bold text-gray-400 border-b-2 border-transparent";
+                document.getElementById('authSubmitBtn').innerText = "ลงทะเบียนสมัครสมาชิก";
+            }
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            if (supabaseClient) {
+                if (authMode === 'register') {
+                    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                    if (error) alert("สมัครไม่สำเร็จ: " + error.message);
+                    else alert("สมัครสมาชิกเรียบร้อยแล้ว!");
+                } else {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                    if (error) alert("เข้าสู่ระบบไม่สำเร็จ: " + error.message);
+                    else {
+                        currentUser = data.user;
+                        updateUI();
+                        closeModal('authModal');
+                    }
+                }
+            } else {
+                // Local Demo Fallback (หากยังไม่ได้ใส่ Key)
+                currentUser = { email: email, role: email.includes('admin') ? 'admin' : 'user' };
+                updateUI();
+                closeModal('authModal');
+                alert("ล็อกอินเข้าสู่ระบบ (Demo Mode) เรียบร้อยแล้ว!");
+            }
+        }
+
+        function updateUI() {
+            if (currentUser) {
+                document.getElementById('guestNav').classList.add('hidden');
+                document.getElementById('userNav').classList.remove('hidden');
+                document.getElementById('userDisplayEmail').innerText = currentUser.email;
+
+                // Check Admin
+                if (currentUser.role === 'admin' || currentUser.email.includes('admin')) {
+                    document.getElementById('adminNavBtn').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('guestNav').classList.remove('hidden');
+                document.getElementById('userNav').classList.add('hidden');
+                document.getElementById('adminNavBtn').classList.add('hidden');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            updateUI();
+            alert("ออกจากระบบเรียบร้อยแล้ว");
+        }
+
+        // CHECKOUT & AUTO DELIVERY LOGIC
+        function startCheckout(name, price, stockCode) {
+            if (!currentUser) {
+                alert("กรุณาเข้าสู่ระบบก่อนทำการสั่งซื้อสินค้าครับ");
+                openAuthModal('login');
+                return;
+            }
+            currentCheckoutItem = { name, price, stockCode };
+            document.getElementById('payItemTitle').innerText = name;
+            document.getElementById('payPrice').innerText = '฿ ' + price;
+            document.getElementById('payStep').classList.remove('hidden');
+            document.getElementById('resultStep').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function confirmPayment() {
+            // Mock Auto-Dispatching Account
+            document.getElementById('payStep').classList.add('hidden');
+            document.getElementById('dispenseUser').innerText = 'acc_' + Math.floor(Math.random() * 8999 + 1000);
+            document.getElementById('dispensePass').innerText = 'Pass#' + Math.floor(Math.random() * 8999 + 1000) + '_Ez';
+            document.getElementById('resultStep').classList.remove('hidden');
+        }
+
+        // ADMIN FUNCTIONS
+        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
+        function openHistoryModal() { document.getElementById('historyModal').classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function addStockItem(e) {
+            e.preventDefault();
+            alert("บันทึกคลังไอดีเกมเรียบร้อยแล้ว! (สต็อกใหม่พร้อมขายทันที)");
+            closeModal('adminModal');
+        }
+    </script>
+</body>
+</html>
