@@ -1,214 +1,414 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME STORE - ร้านขายไอดีเกมระบบอัตโนมัติ</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Game Account Store - ระบบขายไอดีเกมอัตโนมัติ 24 ชม.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Kanit) -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#0b0e14',
+                            card: '#151822',
+                            border: '#222736',
+                            accent: '#6366f1',
+                            neon: '#00ffaa',
+                            pink: '#ff4655'
+                        }
+                    },
+                    fontFamily: {
+                        kanit: ['Kanit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Kanit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0d0f12;
-            color: #ffffff;
-        }
-        /* Navbar */
-        nav {
-            background-color: #15181e;
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ff4655;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff4655;
-            text-decoration: none;
-        }
-        .nav-links a {
-            color: #ccc;
-            text-decoration: none;
-            margin-left: 20px;
-            transition: 0.3s;
-        }
-        .nav-links a:hover {
-            color: #ff4655;
-        }
-
-        /* Banner */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-            padding: 80px 20px;
-        }
-        .hero h1 {
-            font-size: 40px;
-            color: #fff;
-            margin-bottom: 10px;
-        }
-        .hero p {
-            color: #aaa;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        /* Container & Products */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .section-title {
-            font-size: 24px;
-            border-left: 4px solid #ff4655;
-            padding-left: 10px;
-            margin-bottom: 25px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-        .card {
-            background: #15181e;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #232730;
-            transition: 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #ff4655;
-            box-shadow: 0 5px 15px rgba(255, 70, 85, 0.2);
-        }
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .card-title {
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-        .card-desc {
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 15px;
-            height: 40px;
-        }
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .price {
-            font-size: 22px;
-            color: #00ff88;
-            font-weight: bold;
-        }
-        .btn-buy {
-            background: #ff4655;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .btn-buy:hover {
-            background: #e03e4c;
-        }
-
-        /* Footer */
-        footer {
-            background: #15181e;
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            margin-top: 50px;
-            border-top: 1px solid #232730;
-        }
+        body { font-family: 'Kanit', sans-serif; background-color: #0b0e14; color: #f3f4f6; }
+        .glow-effect { box-shadow: 0 0 20px rgba(99, 102, 241, 0.25); }
+        .glow-pink { box-shadow: 0 0 20px rgba(255, 70, 85, 0.25); }
+        .gradient-text { background: linear-gradient(135deg, #a855f7, #6366f1, #00ffaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between">
 
-    <nav>
-        <a href="#" class="logo"><i class="fa-solid =>-gamepad"></i> GAME STORE</a>
-        <div class="nav-links">
-            <a href="#">หน้าแรก</a>
-            <a href="#">สินค้าทั้งหมด</a>
-            <a href="#">ติดต่อเรา</a>
-        </div>
-    </nav>
-
-    <div class="hero">
-        <h1>ศูนย์รวมรหัสเกมคุณภาพ ปลอดภัย 100%</h1>
-        <p>จัดส่งรหัสผ่านระบบอัตโนมัติ การันตีได้รับของทันทีหลังชำระเงิน</p>
-    </div>
-
-    <div class="container">
-        <h2 class="section-title">🔥 สินค้าแนะนำประจำสัปดาห์</h2>
-        
-        <div class="grid">
-            <!-- สินค้าที่ 1 -->
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=500&q=80" alt="Valorant Account">
-                <div class="card-body">
-                    <div class="card-title">Valorant - ไอดีสุ่มมีดแรร์</div>
-                    <div class="card-desc">สกินมีด 1-3 ชิ้น มีโอกาสสุ่มได้เซ็ต Champions</div>
-                    <div class="price-row">
-                        <div class="price">฿ 290</div>
-                        <button class="btn-buy" onclick="alert('กรุณาติดต่อแอดมินทาง LINE เพื่อสั่งซื้อสินค้า')">สั่งซื้อ</button>
-                    </div>
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-[#151822]/90 backdrop-blur-md border-b border-[#222736]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-gamepad"></i>
                 </div>
+                <div>
+                    <span class="text-xl font-bold tracking-wider text-white">GAME <span class="text-indigo-400">STORE</span></span>
+                    <span class="block text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Auto-Dispatch Active
+                    </span>
+                </div>
+            </a>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-md relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ค้นหาไอดีเกม, สกินแรร์, ฮีโร่..." 
+                    class="w-full bg-[#0b0e14] border border-[#222736] rounded-full pl-11 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500 text-gray-200 transition">
             </div>
 
-            <!-- สินค้าที่ 2 -->
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80" alt="RoV Account">
-                <div class="card-body">
-                    <div class="card-title">RoV - ไอดีเริ่มต้นฮีโร่เยอะ</div>
-                    <div class="card-desc">ฮีโร่ 60+ สกิน 40+ สะอาด ยืนยันเมลเรียบร้อย</div>
-                    <div class="price-row">
-                        <div class="price">฿ 150</div>
-                        <button class="btn-buy" onclick="alert('กรุณาติดต่อแอดมินทาง LINE เพื่อสั่งซื้อสินค้า')">สั่งซื้อ</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- สินค้าที่ 3 -->
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=500&q=80" alt="Genshin Account">
-                <div class="card-body">
-                    <div class="card-title">Genshin Impact - AR55+</div>
-                    <div class="card-desc">ตัวละคร 5 ดาว 8 ตัว พร้อมอาวุธประจำตัว</div>
-                    <div class="price-row">
-                        <div class="price">฿ 490</div>
-                        <button class="btn-buy" onclick="alert('กรุณาติดต่อแอดมินทาง LINE เพื่อสั่งซื้อสินค้า')">สั่งซื้อ</button>
-                    </div>
-                </div>
+            <!-- Header Badges -->
+            <div class="flex items-center gap-3">
+                <a href="#catalog" class="hidden sm:flex items-center gap-2 bg-[#222736] hover:bg-indigo-600/20 hover:border-indigo-500 border border-transparent text-xs text-gray-300 px-4 py-2 rounded-full transition">
+                    <i class="fa-solid fa-layer-group text-indigo-400"></i> หมวดหมู่ทั้งหมด
+                </a>
+                <button onclick="alert('ระบบสแกนสลิปอัตโนมัติพร้อมทำงาน 24 ชั่วโมง')" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-medium text-sm px-5 py-2.5 rounded-full shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> ระบบปลอดภัย 100%
+                </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <footer>
-        <p>&copy; 2026 GAME STORE. All rights reserved.</p>
+    <!-- Hero Section -->
+    <section class="relative py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="bg-gradient-to-r from-[#151822] via-[#1a1f2c] to-[#151822] border border-[#222736] rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-2xl">
+            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -top-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-2xl relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-medium mb-4">
+                    <i class="fa-solid fa-bolt text-emerald-400"></i> Zero Delay Auto-Delivery Platform
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight mb-4">
+                    ศูนย์รวมขายรหัสเกม <br><span class="gradient-text">ส่งมอบระบบอัตโนมัติทันที</span>
+                </h1>
+                <p class="text-gray-400 text-sm sm:text-base mb-8">
+                    ซื้อปุ๊บ ได้รับไอดีทันทีบนหน้าจอและประวัติการสั่งซื้อ ปลอดภัยด้วยระบบจัดเก็บรหัสผ่านเข้ารหัส AES-256 การันตีประกันไอดีตลอดการใช้งาน
+                </p>
+
+                <!-- Live Sales Ticker -->
+                <div class="bg-[#0b0e14]/80 border border-[#222736] rounded-xl p-3 flex items-center gap-3 max-w-md">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-cart-check"></i>
+                    </div>
+                    <div class="text-xs">
+                        <p class="text-gray-300 font-medium" id="tickerText">คุณ K*** ซื้อไอดี Valorant Radiant เมื่อ 2 นาทีที่แล้ว</p>
+                        <p class="text-emerald-400 font-mono text-[10px]">✓ จัดส่งสำเร็จภายใน 1.8 วินาที</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Categories Filter -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-8">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-6 bg-indigo-500 rounded-full"></span> เลือกตามหมวดหมู่เกม
+            </h2>
+        </div>
+
+        <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none" id="categoryButtons">
+            <button onclick="filterCategory('all')" class="cat-btn active bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium shrink-0 transition">ทั้งหมด</button>
+            <button onclick="filterCategory('Valorant')" class="cat-btn bg-[#151822] hover:bg-[#1f2430] border border-[#222736] text-gray-300 px-5 py-2.5 rounded-xl text-sm font-medium shrink-0 transition">Valorant</button>
+            <button onclick="filterCategory('Roblox')" class="cat-btn bg-[#151822] hover:bg-[#1f2430] border border-[#222736] text-gray-300 px-5 py-2.5 rounded-xl text-sm font-medium shrink-0 transition">Roblox (Blox Fruits)</button>
+            <button onclick="filterCategory('Genshin Impact')" class="cat-btn bg-[#151822] hover:bg-[#1f2430] border border-[#222736] text-gray-300 px-5 py-2.5 rounded-xl text-sm font-medium shrink-0 transition">Genshin Impact</button>
+            <button onclick="filterCategory('RoV')" class="cat-btn bg-[#151822] hover:bg-[#1f2430] border border-[#222736] text-gray-300 px-5 py-2.5 rounded-xl text-sm font-medium shrink-0 transition">RoV / Free Fire</button>
+        </div>
+    </section>
+
+    <!-- Product Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+            
+            <!-- Item 1: Valorant -->
+            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300 group" data-category="Valorant">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" alt="Valorant" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-red-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-md">Valorant</span>
+                    <span class="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[11px] font-medium px-2.5 py-1 rounded-md backdrop-blur-md">
+                        <i class="fa-solid fa-circle-check"></i> เปลี่ยนเมลได้
+                    </span>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-indigo-400 transition">VALORANT - Radiant Ready / Rare Skins</h3>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">สกินมีด Kuronami + Vandal Prime การันตีสะอาด ไม่มีประวัติการแบน มีดแรร์ 3 ชิ้น</p>
+                    <div class="flex items-center justify-between border-t border-[#222736] pt-4">
+                        <div>
+                            <span class="text-xs text-gray-500 block">ราคาโปรโมชัน</span>
+                            <span class="text-xl font-bold text-emerald-400">฿ 290</span>
+                        </div>
+                        <button onclick="openCheckout('VALORANT - Radiant Ready', 290)" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-xs"></i> ซื้อทันที
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2: Roblox -->
+            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300 group" data-category="Roblox">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=600&q=80" alt="Roblox" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-purple-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-md">Roblox</span>
+                    <span class="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[11px] font-medium px-2.5 py-1 rounded-md backdrop-blur-md">
+                        <i class="fa-solid fa-shield"></i> Unset PIN
+                    </span>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-indigo-400 transition">ROBLOX - Blox Fruits Max Level + VIP</h3>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">ไอดี Blox Fruits เลเวลตัน ดาบคู่คู่หมัดการันตี มีผลตื่นเต็มขั้น พร้อม Gamepass VIP</p>
+                    <div class="flex items-center justify-between border-t border-[#222736] pt-4">
+                        <div>
+                            <span class="text-xs text-gray-500 block">ราคาโปรโมชัน</span>
+                            <span class="text-xl font-bold text-emerald-400">฿ 180</span>
+                        </div>
+                        <button onclick="openCheckout('ROBLOX - Blox Fruits Max Level', 180)" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-xs"></i> ซื้อทันที
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3: Genshin Impact -->
+            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300 group" data-category="Genshin Impact">
+                <div class="relative aspect-video overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80" alt="Genshin" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <span class="absolute top-3 left-3 bg-amber-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-md">Genshin</span>
+                    <span class="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[11px] font-medium px-2.5 py-1 rounded-md backdrop-blur-md">
+                        <i class="fa-solid fa-link-slash"></i> Unlinked Socials
+                    </span>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-lg font-bold text-white mb-2 group-hover:text-indigo-400 transition">GENSHIN IMPACT - AR55+ / Limited 5-Star</h3>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">ตัวละคร 5 ดาว 8 ตัวละคร (Furina, Raiden Shogun, Arlecchino) พร้อมอาวุธประจำตัว</p>
+                    <div class="flex items-center justify-between border-t border-[#222736] pt-4">
+                        <div>
+                            <span class="text-xs text-gray-500 block">ราคาโปรโมชัน</span>
+                            <span class="text-xl font-bold text-emerald-400">฿ 450</span>
+                        </div>
+                        <button onclick="openCheckout('GENSHIN IMPACT - AR55+', 450)" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-xs"></i> ซื้อทันที
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Game Catalog Structure Table Section -->
+    <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-16">
+        <div class="bg-[#151822] border border-[#222736] rounded-2xl p-6 sm:p-8">
+            <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-indigo-400"></i> โครงสร้างมาตรฐานความปลอดภัยไอดี (Game Catalog Specification)
+            </h2>
+            <p class="text-xs text-gray-400 mb-6">ไอดีเกมทุกประเภทผ่านการตรวจสอบสเปกและล้างประวัติเสี่ยงแบนก่อนนำขึ้นระบบ</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm text-gray-300">
+                    <thead class="bg-[#0b0e14] text-gray-400 uppercase text-[11px] border-b border-[#222736]">
+                        <tr>
+                            <th class="py-3 px-4">ชื่อเกม (Game Title)</th>
+                            <th class="py-3 px-4">ประเภทไอดี (Account Types)</th>
+                            <th class="py-3 px-4">มาตรฐานการผูกข้อมูล (Verification)</th>
+                            <th class="py-3 px-4">การจัดส่ง (Delivery Mode)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#222736]">
+                        <tr class="hover:bg-[#1a1f2c]/50">
+                            <td class="py-3.5 px-4 font-bold text-white">Valorant</td>
+                            <td class="py-3.5 px-4">Ranked Ready / Radiant / Rare Skins</td>
+                            <td class="py-3.5 px-4 text-emerald-400">Email Changeable + Clean Ban History</td>
+                            <td class="py-3.5 px-4"><span class="bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md text-xs font-mono">Instant Auto-Dispatch</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1a1f2c]/50">
+                            <td class="py-3.5 px-4 font-bold text-white">Roblox</td>
+                            <td class="py-3.5 px-4">Blox Fruits / High Level / VIP</td>
+                            <td class="py-3.5 px-4 text-emerald-400">Passkey Verified + Unset PIN</td>
+                            <td class="py-3.5 px-4"><span class="bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md text-xs font-mono">Instant Auto-Dispatch</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1a1f2c]/50">
+                            <td class="py-3.5 px-4 font-bold text-white">Genshin Impact</td>
+                            <td class="py-3.5 px-4">AR55+ / Limited 5-Star Characters</td>
+                            <td class="py-3.5 px-4 text-emerald-400">Unlinked Socials + Full Access</td>
+                            <td class="py-3.5 px-4"><span class="bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md text-xs font-mono">Instant Auto-Dispatch</span></td>
+                        </tr>
+                        <tr class="hover:bg-[#1a1f2c]/50">
+                            <td class="py-3.5 px-4 font-bold text-white">Free Fire / RoV</td>
+                            <td class="py-3.5 px-4">Grandmaster / Limited Skins</td>
+                            <td class="py-3.5 px-4 text-emerald-400">Clean Garena / Facebook Login</td>
+                            <td class="py-3.5 px-4"><span class="bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-md text-xs font-mono">Instant Auto-Dispatch</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security & Guarantee Badges -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-[#151822] border border-[#222736] p-6 rounded-2xl flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center shrink-0 text-xl">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">AES-256 Storage</h4>
+                    <p class="text-xs text-gray-400">ข้อมูลไอดีและรหัสผ่านถูกเข้ารหัสปลอดภัยสูงสุดก่อนจัดเก็บในฐานข้อมูล</p>
+                </div>
+            </div>
+
+            <div class="bg-[#151822] border border-[#222736] p-6 rounded-2xl flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0 text-xl">
+                    <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Slip Verification Bot</h4>
+                    <p class="text-xs text-gray-400">ระบบตรวจสอบสลิปอัตโนมัติ แม่นยำ ป้องกันสลิปซ้ำและสลิปปลอม 100%</p>
+                </div>
+            </div>
+
+            <div class="bg-[#151822] border border-[#222736] p-6 rounded-2xl flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center shrink-0 text-xl">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-1">Claim Management</h4>
+                    <p class="text-xs text-gray-400">มีระบบแจ้งเคลมไอดีอัตโนมัติ เปลี่ยนไอดีใหม่ทันทีหากเข้าใช้งานไม่ได้</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#151822] border-t border-[#222736] py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-500">
+            <p class="mb-2">© 2026 GAME STORE. Automated Account Selling Platform. All rights reserved.</p>
+            <p class="text-[11px] text-gray-600">ระบบสนับสนุน PromptPay QR (Fee 0.5%) และ TrueMoney Wallet (Fee 1.5%)</p>
+        </div>
     </footer>
 
+    <!-- Modal Auto-Delivery Simulation -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#151822] border border-[#222736] w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="closeCheckout()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <div id="modalStep1">
+                <h3 class="text-lg font-bold text-white mb-1">ชำระเงิน / สั่งซื้อสินค้า</h3>
+                <p class="text-xs text-indigo-400 font-medium mb-4" id="modalProductName">VALORANT Account</p>
+                
+                <div class="bg-[#0b0e14] p-4 rounded-xl border border-[#222736] mb-4 text-center">
+                    <span class="text-xs text-gray-400 block mb-1">ยอดชำระสุทธิ</span>
+                    <span class="text-3xl font-extrabold text-emerald-400" id="modalProductPrice">฿ 290</span>
+                </div>
+
+                <div class="space-y-3 mb-6">
+                    <p class="text-xs text-gray-300 font-medium">เลือกช่องทางชำระเงิน:</p>
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-indigo-500 bg-indigo-500/10 cursor-pointer">
+                        <span class="text-xs font-bold text-white flex items-center gap-2"><i class="fa-solid fa-qrcode text-indigo-400"></i> PromptPay QR Code</span>
+                        <span class="text-[10px] text-emerald-400 font-mono">ค่าธรรมเนียม 0.5%</span>
+                    </label>
+                </div>
+
+                <button onclick="simulatePayment()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check"></i> จำลองการชำระเงิน (Test Dispatch)
+                </button>
+            </div>
+
+            <div id="modalStep2" class="hidden text-center">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1">จัดส่งไอดีสำเร็จ! (Auto-Delivered)</h3>
+                <p class="text-xs text-gray-400 mb-4">ระบบได้ดึงข้อมูลจาก Encrypted Pool ส่งเข้าหน้าจอของคุณแล้ว</p>
+
+                <div class="bg-[#0b0e14] border border-[#222736] rounded-xl p-4 text-left font-mono text-xs mb-4 space-y-2">
+                    <div>
+                        <span class="text-gray-500">USERNAME:</span>
+                        <div class="text-emerald-400 font-bold flex justify-between items-center">
+                            <span>val_account_8922</span>
+                            <button onclick="navigator.clipboard.writeText('val_account_8922')" class="text-gray-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-gray-500">PASSWORD:</span>
+                        <div class="text-emerald-400 font-bold flex justify-between items-center">
+                            <span>Pass#2026_Secure</span>
+                            <button onclick="navigator.clipboard.writeText('Pass#2026_Secure')" class="text-gray-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="closeCheckout()" class="w-full bg-[#222736] hover:bg-[#2e3548] text-white font-medium py-2.5 rounded-xl transition text-xs">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script>
+        // Filter Category
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Live Search Filter
+        function filterProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                if (title.includes(input)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Modal Functions
+        function openCheckout(name, price) {
+            document.getElementById('modalProductName').innerText = name;
+            document.getElementById('modalProductPrice').innerText = '฿ ' + price;
+            document.getElementById('modalStep1').classList.remove('hidden');
+            document.getElementById('modalStep2').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function simulatePayment() {
+            document.getElementById('modalStep1').classList.add('hidden');
+            document.getElementById('modalStep2').classList.remove('hidden');
+        }
+
+        // Live Ticker Simulation
+        const tickerMessages = [
+            "คุณ K*** ซื้อไอดี Valorant Radiant เมื่อ 2 นาทีที่แล้ว",
+            "คุณ M*** ซื้อไอดี Blox Fruits Max Level เมื่อ 5 นาทีที่แล้ว",
+            "คุณ A*** ซื้อไอดี Genshin Impact AR55+ เมื่อ 8 นาทีที่แล้ว"
+        ];
+        let tickerIndex = 0;
+        setInterval(() => {
+            tickerIndex = (tickerIndex + 1) % tickerMessages.length;
+            document.getElementById('tickerText').innerText = tickerMessages[tickerIndex];
+        }, 4000);
+    </script>
 </body>
 </html>
