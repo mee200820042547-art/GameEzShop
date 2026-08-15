@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAME STORE - ระบบขายไอดีเกมอัตโนมัติ 24 ชม.</title>
+    <title>EAZY GAME STORE - ระบบขายไอดีเกมอัตโนมัติ 24 ชม.</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts (Kanit & Space Grotesk) -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -18,216 +18,346 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { bg: '#0b0e14', card: '#151822', border: '#222736', accent: '#6366f1', neon: '#00ffaa' }
+                        cyber: {
+                            bg: '#07090e',
+                            card: '#0f1420',
+                            cardHover: '#141c2e',
+                            border: '#1e293b',
+                            cyan: '#00f0ff',
+                            purple: '#8b5cf6',
+                            emerald: '#10b981',
+                            pink: '#f43f5e'
+                        }
                     },
-                    fontFamily: { kanit: ['Kanit', 'sans-serif'] }
+                    fontFamily: {
+                        kanit: ['Kanit', 'sans-serif'],
+                        tech: ['Space Grotesk', 'sans-serif']
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { font-family: 'Kanit', sans-serif; background-color: #0b0e14; color: #f3f4f6; }
-        .gradient-text { background: linear-gradient(135deg, #a855f7, #6366f1, #00ffaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { font-family: 'Kanit', sans-serif; background-color: #07090e; color: #f1f5f9; }
+        .glow-cyan { box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); }
+        .glow-card:hover { box-shadow: 0 0 30px rgba(139, 92, 246, 0.25); border-color: rgba(0, 240, 255, 0.4); }
+        .gradient-text { background: linear-gradient(135deg, #00f0ff 0%, #8b5cf6 50%, #f43f5e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-panel { background: rgba(15, 20, 32, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-header { background: rgba(7, 9, 14, 0.85); backdrop-filter: blur(16px); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 bg-[#151822]/90 backdrop-blur-md border-b border-[#222736]">
+    <!-- Header Navigation (Cherax + MREasyShop Hybrid Style) -->
+    <header class="sticky top-0 z-40 glass-header border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-            <a href="#" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/30">
-                    <i class="fa-solid fa-gamepad"></i>
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-pink-500 p-0.5 shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition duration-300">
+                    <div class="w-full h-full bg-[#07090e] rounded-[14px] flex items-center justify-center">
+                        <i class="fa-solid fa-bolt text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 text-xl"></i>
+                    </div>
                 </div>
                 <div>
-                    <span class="text-xl font-bold tracking-wider text-white">GAME <span class="text-indigo-400">STORE</span></span>
+                    <span class="text-xl font-extrabold tracking-wider font-tech text-white flex items-center gap-1.5">
+                        EAZY<span class="gradient-text">STORE</span>
+                        <span class="text-[10px] bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-2 py-0.5 rounded-full font-mono">v2.4</span>
+                    </span>
                     <span class="block text-[10px] text-emerald-400 font-mono flex items-center gap-1">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Auto-Delivery System
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> SYSTEM ONLINE 24/7
                     </span>
                 </div>
             </a>
 
-            <!-- Search Bar -->
+            <!-- Search Bar (Clean Minimalist) -->
             <div class="hidden md:flex flex-1 max-w-md relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ค้นหาไอดีเกม, สกินแรร์..." 
-                    class="w-full bg-[#0b0e14] border border-[#222736] rounded-full pl-11 pr-4 py-2 text-sm focus:outline-none focus:border-indigo-500 text-gray-200">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ค้นหาไอดีเกม, ฮีโร่, สกินแรร์..." 
+                    class="w-full bg-[#0f1420] border border-white/10 rounded-2xl pl-11 pr-4 py-2.5 text-xs text-gray-200 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/60 transition duration-200">
             </div>
 
-            <!-- User Auth / Profile Area -->
+            <!-- Header Action Badges & Auth Area -->
             <div class="flex items-center gap-3">
-                <!-- Admin Button (Hidden by default) -->
-                <button id="adminNavBtn" onclick="openAdminModal()" class="hidden bg-amber-500/20 border border-amber-500/50 text-amber-400 text-xs px-3 py-2 rounded-xl hover:bg-amber-500/30 transition flex items-center gap-1 font-bold">
-                    <i class="fa-solid fa-user-gear"></i> หลังบ้าน Admin
+                <!-- Admin Panel Trigger -->
+                <button id="adminNavBtn" onclick="openAdminModal()" class="hidden bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs px-3.5 py-2 rounded-xl hover:bg-amber-500/20 transition flex items-center gap-2 font-bold">
+                    <i class="fa-solid fa-shield-halved"></i> หลังบ้าน Admin
                 </button>
 
                 <!-- Guest Actions -->
                 <div id="guestNav" class="flex items-center gap-2">
-                    <button onclick="openAuthModal('login')" class="text-xs font-medium text-gray-300 hover:text-white px-3 py-2">เข้าสู่ระบบ</button>
-                    <button onclick="openAuthModal('register')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/30 transition">สมัครสมาชิก</button>
+                    <button onclick="openAuthModal('login')" class="text-xs font-medium text-gray-300 hover:text-white px-3.5 py-2 transition">เข้าสู่ระบบ</button>
+                    <button onclick="openAuthModal('register')" class="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-semibold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-cyan-500/25 transition duration-300">สมัครสมาชิก</button>
                 </div>
 
                 <!-- Logged In User Actions -->
-                <div id="userNav" class="hidden flex items-center gap-2">
-                    <button onclick="openHistoryModal()" class="bg-[#222736] hover:bg-[#2e3548] text-xs text-gray-200 px-3 py-2 rounded-xl border border-gray-700 flex items-center gap-1">
-                        <i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> ประวัติการซื้อ
+                <div id="userNav" class="hidden flex items-center gap-3">
+                    <button onclick="openHistoryModal()" class="bg-[#0f1420] hover:bg-[#141c2e] text-xs text-gray-200 px-3.5 py-2 rounded-xl border border-white/10 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-box-open text-cyan-400"></i> ประวัติไอดีที่ซื้อ
                     </button>
-                    <div class="text-xs text-emerald-400 font-mono bg-[#0b0e14] px-3 py-1.5 rounded-lg border border-[#222736]" id="userDisplayEmail">user@mail.com</div>
-                    <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    <span id="userDisplayEmail" class="text-xs text-emerald-400 font-mono bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl">user@mail.com</span>
+                    <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-power-off"></i></button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-        <!-- Banner Hero -->
-        <div class="bg-gradient-to-r from-[#151822] via-[#1a1f2c] to-[#151822] border border-[#222736] rounded-3xl p-6 sm:p-10 mb-8 relative overflow-hidden">
-            <div class="max-w-xl">
-                <span class="inline-block bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs px-3 py-1 rounded-full mb-3"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ระบบความปลอดภัยระดับ AES-256</span>
-                <h1 class="text-2xl sm:text-4xl font-extrabold text-white mb-2">ซื้อขายไอดีเกม <span class="gradient-text">ส่งมอบอัตโนมัติ 24 ชม.</span></h1>
-                <p class="text-xs sm:text-sm text-gray-400 mb-4">เข้าสู่ระบบ -> เลือกไอดีที่ต้องการ -> สแกนจ่าย -> รับ Username/Password บนหน้าจอทันที</p>
-            </div>
-        </div>
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-12">
 
-        <!-- Product Catalog Header -->
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-6 bg-indigo-500 rounded-full"></span> รายการไอดีเกมพร้อมส่งมอบ
-            </h2>
-        </div>
+        <!-- Hero Feature Showcase Section (Cherax Vibe) -->
+        <section class="relative rounded-3xl p-8 sm:p-12 overflow-hidden border border-white/10 glass-panel">
+            <div class="absolute -right-16 -bottom-16 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-16 -top-16 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Products List -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
-            <!-- Product Item 1 -->
-            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300">
-                <div class="relative aspect-video">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">VALORANT</span>
+            <div class="relative z-10 max-w-3xl">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-6">
+                    <i class="fa-solid fa-bolt text-emerald-400 animate-bounce"></i> Zero-Delay Auto Account Delivery Platform
                 </div>
-                <div class="p-5">
-                    <h3 class="text-base font-bold text-white mb-1">Valorant Radiant Ready Account</h3>
-                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">สกิน Kuronami + Vandal Prime การันตีสะอาด เปลี่ยนเมลได้ทันที</p>
-                    <div class="flex items-center justify-between border-t border-[#222736] pt-3">
-                        <span class="text-lg font-bold text-emerald-400">฿ 290</span>
-                        <button onclick="startCheckout('VALORANT - Radiant Ready', 290, 'VAL-8902')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-4 py-2 rounded-xl transition">ซื้อทันที</button>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight mb-4 tracking-tight">
+                    ตลาดขายไอดีเกมระบบ <br><span class="gradient-text">ส่งมอบอัตโนมัติทันที 24 ชม.</span>
+                </h1>
+                <p class="text-gray-400 text-xs sm:text-sm mb-8 leading-relaxed max-w-2xl">
+                    การันตีไอดีสะอาด ลบประวัติเสี่ยงแบน 100% ซื้อปุ๊บรับ Username/Password ทันทีบนหน้าจอ พร้อมรับประกันไอดีตลอดการใช้งาน ปลอดภัยด้วยการเข้ารหัสข้อมูลระดับสูงสุด
+                </p>
+
+                <!-- Live Ticker & Quick Stats (MREasyShop Feature) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-white/10 pt-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                            <i class="fa-solid fa-shield-cat text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">ประกันไอดีตลอดชีพ</span>
+                            <span class="text-[10px] text-gray-400">มีระบบแจ้งเคลมไอดีใหม่ 100%</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                            <i class="fa-solid fa-qrcode text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">สแกนจ่ายส่งมอบไว</span>
+                            <span class="text-[10px] text-gray-400">ระบบตรวจสลิป 1.5 วินาที</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                            <i class="fa-solid fa-user-lock text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-white">เปลี่ยนเมล-รหัสได้ทันที</span>
+                            <span class="text-[10px] text-gray-400">ข้อมูลครบถ้วน Full Access</span>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Product Item 2 -->
-            <div class="product-card bg-[#151822] border border-[#222736] rounded-2xl overflow-hidden hover:border-indigo-500/50 transition duration-300">
-                <div class="relative aspect-video">
-                    <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
-                    <span class="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">ROBLOX</span>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-base font-bold text-white mb-1">Blox Fruits Max Level + VIP Pass</h3>
-                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">เลเวลตัน ผลตื่นเต็มขั้น ดาบคู่หมัดการันตี มี Gamepass VIP</p>
-                    <div class="flex items-center justify-between border-t border-[#222736] pt-3">
-                        <span class="text-lg font-bold text-emerald-400">฿ 180</span>
-                        <button onclick="startCheckout('Blox Fruits Max Level', 180, 'RBX-3311')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-4 py-2 rounded-xl transition">ซื้อทันที</button>
+        <!-- Category Selector (MREasyShop Pill Style) -->
+        <section class="space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-white flex items-center gap-3">
+                    <span class="w-2 h-6 bg-gradient-to-b from-cyan-400 to-indigo-600 rounded-full"></span> 
+                    เลือกหมวดหมู่เกม
+                </h2>
+            </div>
+
+            <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none" id="categoryButtons">
+                <button onclick="filterCategory('all')" class="cat-btn active bg-gradient-to-r from-cyan-500 to-indigo-600 text-white font-semibold px-6 py-2.5 rounded-2xl text-xs shrink-0 shadow-lg shadow-cyan-500/20 transition">
+                    <i class="fa-solid fa-border-all mr-1.5"></i> ทั้งหมด
+                </button>
+                <button onclick="filterCategory('Valorant')" class="cat-btn bg-[#0f1420] hover:bg-[#141c2e] border border-white/10 text-gray-300 font-medium px-6 py-2.5 rounded-2xl text-xs shrink-0 transition">
+                    <i class="fa-solid fa-crosshairs text-red-500 mr-1.5"></i> Valorant
+                </button>
+                <button onclick="filterCategory('Roblox')" class="cat-btn bg-[#0f1420] hover:bg-[#141c2e] border border-white/10 text-gray-300 font-medium px-6 py-2.5 rounded-2xl text-xs shrink-0 transition">
+                    <i class="fa-solid fa-cube text-purple-400 mr-1.5"></i> Roblox (Blox Fruits)
+                </button>
+                <button onclick="filterCategory('Genshin Impact')" class="cat-btn bg-[#0f1420] hover:bg-[#141c2e] border border-white/10 text-gray-300 font-medium px-6 py-2.5 rounded-2xl text-xs shrink-0 transition">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-400 mr-1.5"></i> Genshin Impact
+                </button>
+            </div>
+        </section>
+
+        <!-- Product Cards Grid (MREasyShop + Cherax Cyber Cards) -->
+        <section class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+                
+                <!-- Product 1: Valorant -->
+                <div class="product-card bg-[#0f1420] border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-500/50 glow-card transition duration-300 flex flex-col justify-between" data-category="Valorant">
+                    <div>
+                        <div class="relative aspect-video overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-red-600/90 text-white text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider backdrop-blur-md">Valorant</span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-medium px-3 py-1 rounded-xl backdrop-blur-md">
+                                <i class="fa-solid fa-circle-check mr-1"></i> สะอาด 100%
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-base font-bold text-white mb-2 line-clamp-1">VALORANT - Radiant Ready / Rare Skins</h3>
+                            <p class="text-xs text-gray-400 mb-4 line-clamp-2">สกินมีด Kuronami + Vandal Prime การันตีไม่มีประวัติการแบน เปลี่ยนเมลได้ทันที</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0 border-t border-white/5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-500 block uppercase">ราคาพิเศษ</span>
+                            <span class="text-2xl font-black text-emerald-400 font-tech">฿ 290</span>
+                        </div>
+                        <button onclick="startCheckout('VALORANT - Radiant Ready', 290, 'VAL-8902')" class="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-cyan-500/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> ซื้อทันที
+                        </button>
                     </div>
                 </div>
+
+                <!-- Product 2: Roblox -->
+                <div class="product-card bg-[#0f1420] border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-500/50 glow-card transition duration-300 flex flex-col justify-between" data-category="Roblox">
+                    <div>
+                        <div class="relative aspect-video overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-purple-600/90 text-white text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider backdrop-blur-md">Roblox</span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-medium px-3 py-1 rounded-xl backdrop-blur-md">
+                                <i class="fa-solid fa-lock-open mr-1"></i> Unset PIN
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-base font-bold text-white mb-2 line-clamp-1">ROBLOX - Blox Fruits Max Level + VIP</h3>
+                            <p class="text-xs text-gray-400 mb-4 line-clamp-2">ไอดี Blox Fruits เลเวลตัน ดาบคู่คู่หมัดการันตี มีผลตื่นเต็มขั้น พร้อม Gamepass VIP</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0 border-t border-white/5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-500 block uppercase">ราคาพิเศษ</span>
+                            <span class="text-2xl font-black text-emerald-400 font-tech">฿ 180</span>
+                        </div>
+                        <button onclick="startCheckout('ROBLOX - Blox Fruits Max Level', 180, 'RBX-3311')" class="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-cyan-500/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> ซื้อทันที
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3: Genshin -->
+                <div class="product-card bg-[#0f1420] border border-white/10 rounded-3xl overflow-hidden hover:border-cyan-500/50 glow-card transition duration-300 flex flex-col justify-between" data-category="Genshin Impact">
+                    <div>
+                        <div class="relative aspect-video overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-amber-600/90 text-white text-[10px] font-bold px-3 py-1 rounded-xl uppercase tracking-wider backdrop-blur-md">Genshin</span>
+                            <span class="absolute top-3 right-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-medium px-3 py-1 rounded-xl backdrop-blur-md">
+                                <i class="fa-solid fa-link-slash mr-1"></i> Unlinked
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-base font-bold text-white mb-2 line-clamp-1">GENSHIN - AR55+ / Limited 5-Star</h3>
+                            <p class="text-xs text-gray-400 mb-4 line-clamp-2">ตัวละคร 5 ดาว 8 ตัวละคร (Furina, Raiden, Arlecchino) พร้อมอาวุธประจำตัว</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0 border-t border-white/5 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-500 block uppercase">ราคาพิเศษ</span>
+                            <span class="text-2xl font-black text-emerald-400 font-tech">฿ 450</span>
+                        </div>
+                        <button onclick="startCheckout('GENSHIN - AR55+', 450, 'GEN-4421')" class="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-cyan-500/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> ซื้อทันที
+                        </button>
+                    </div>
+                </div>
+
             </div>
-        </div>
+        </section>
+
     </main>
 
-    <!-- 1. AUTH MODAL (LOGIN / REGISTER) -->
-    <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#151822] border border-[#222736] w-full max-w-sm rounded-2xl p-6 relative">
-            <button onclick="closeModal('authModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="flex border-b border-[#222736] mb-5">
-                <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-2 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500">เข้าสู่ระบบ</button>
-                <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-2 text-sm font-bold text-gray-400 border-b-2 border-transparent">สมัครสมาชิก</button>
+    <!-- Modal 1: Auth (Login/Register) -->
+    <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#0f1420] border border-white/10 w-full max-w-sm rounded-3xl p-6 relative glow-cyan">
+            <button onclick="closeModal('authModal')" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="flex border-b border-white/10 mb-6">
+                <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-xs font-bold text-cyan-400 border-b-2 border-cyan-500">เข้าสู่ระบบ</button>
+                <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-xs font-bold text-gray-400 border-b-2 border-transparent">สมัครสมาชิก</button>
             </div>
-
-            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+            <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">อีเมล (Email)</label>
-                    <input type="email" id="authEmail" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs text-gray-400 mb-1.5">อีเมล (Email)</label>
+                    <input type="email" id="authEmail" required class="w-full bg-[#07090e] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">รหัสผ่าน (Password)</label>
-                    <input type="password" id="authPassword" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                    <label class="block text-xs text-gray-400 mb-1.5">รหัสผ่าน (Password)</label>
+                    <input type="password" id="authPassword" required class="w-full bg-[#07090e] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
                 </div>
-                <button type="submit" id="authSubmitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg transition">เข้าสู่ระบบ</button>
+                <button type="submit" id="authSubmitBtn" class="w-full bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold text-xs py-3 rounded-xl transition shadow-lg shadow-cyan-500/20">เข้าสู่ระบบ</button>
             </form>
         </div>
     </div>
 
-    <!-- 2. PAYMENT & AUTO-DELIVERY MODAL -->
-    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#151822] border border-[#222736] w-full max-w-md rounded-2xl p-6 relative">
-            <button onclick="closeModal('checkoutModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-
-            <!-- Step 1: Pay -->
+    <!-- Modal 2: Payment & Instant Auto-Delivery -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#0f1420] border border-white/10 w-full max-w-md rounded-3xl p-6 relative">
+            <button onclick="closeModal('checkoutModal')" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            
             <div id="payStep">
-                <h3 class="text-base font-bold text-white mb-1">ชำระเงินและรับไอดี</h3>
-                <p id="payItemTitle" class="text-xs text-indigo-400 font-medium mb-3">-</p>
-                <div class="bg-[#0b0e14] border border-[#222736] p-4 rounded-xl text-center mb-4">
-                    <span class="text-xs text-gray-400 block mb-1">สแกน QR Code PromptPay</span>
-                    <div class="w-36 h-36 bg-white mx-auto my-2 rounded-lg p-2 flex items-center justify-center text-black font-mono text-[10px] flex-col">
-                        <i class="fa-solid fa-qrcode text-5xl mb-1"></i>
-                        <span>PROMPTPAY QR</span>
+                <h3 class="text-base font-bold text-white mb-1">ชำระเงินสแกน QR Code</h3>
+                <p id="payItemTitle" class="text-xs text-cyan-400 font-medium mb-4">-</p>
+                
+                <div class="bg-[#07090e] border border-white/10 p-5 rounded-2xl text-center mb-5">
+                    <span class="text-xs text-gray-400 block mb-2">PromptPay QR Auto-Verify</span>
+                    <div class="w-40 h-40 bg-white mx-auto my-2 rounded-xl p-2 flex items-center justify-center text-black flex-col shadow-lg">
+                        <i class="fa-solid fa-qrcode text-6xl mb-1"></i>
+                        <span class="font-mono text-[9px] font-bold">PROMPTPAY OFFICIAL</span>
                     </div>
-                    <span id="payPrice" class="text-2xl font-extrabold text-emerald-400">฿ 0</span>
+                    <span id="payPrice" class="text-3xl font-black text-emerald-400 font-tech">฿ 0</span>
                 </div>
-                <button onclick="confirmPayment()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-check"></i> ยืนยันการชำระเงิน (จำลองการรับไอดี)
+                <button onclick="confirmPayment()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> ยืนยันการชำระเงิน (จำลองส่งมอบรหัส)
                 </button>
             </div>
 
-            <!-- Step 2: Account Dispensed -->
             <div id="resultStep" class="hidden text-center">
-                <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-2 text-xl">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 text-2xl">
                     <i class="fa-solid fa-check"></i>
                 </div>
-                <h3 class="text-base font-bold text-white mb-1">ส่งมอบรหัสสำเร็จ!</h3>
-                <p class="text-xs text-gray-400 mb-4">คุณสามารถก็อปปี้รหัสเข้าใช้งานได้ทันที</p>
-                <div class="bg-[#0b0e14] border border-[#222736] rounded-xl p-4 text-left font-mono text-xs mb-4 space-y-2">
+                <h3 class="text-base font-bold text-white mb-1">ส่งมอบไอดีสำเร็จ!</h3>
+                <p class="text-xs text-gray-400 mb-4">ข้อมูลไอดีถูกเข้ารหัสจัดส่งมาที่หน้าจอของคุณเรียบร้อยแล้ว</p>
+                
+                <div class="bg-[#07090e] border border-white/10 rounded-2xl p-4 text-left font-mono text-xs mb-5 space-y-3">
                     <div>
-                        <span class="text-gray-500 text-[10px]">USERNAME:</span>
-                        <div class="text-emerald-400 font-bold flex justify-between items-center" id="dispenseUser">game_user_99</div>
+                        <span class="text-gray-500 text-[10px] block">USERNAME / EMAIL:</span>
+                        <div class="text-emerald-400 font-bold flex justify-between items-center" id="dispenseUser">val_account_8922</div>
                     </div>
                     <div>
-                        <span class="text-gray-500 text-[10px]">PASSWORD:</span>
-                        <div class="text-emerald-400 font-bold flex justify-between items-center" id="dispensePass">Pass_2026_Secured</div>
+                        <span class="text-gray-500 text-[10px] block">PASSWORD:</span>
+                        <div class="text-emerald-400 font-bold flex justify-between items-center" id="dispensePass">Pass#2026_Secure</div>
                     </div>
                 </div>
-                <button onclick="closeModal('checkoutModal')" class="w-full bg-[#222736] text-white text-xs py-2 rounded-xl">ปิดหน้าต่าง</button>
+                <button onclick="closeModal('checkoutModal')" class="w-full bg-[#1e293b] hover:bg-[#2d3d54] text-white text-xs py-3 rounded-xl font-medium">ปิดหน้าต่าง</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. ADMIN BACKEND MODAL -->
-    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#151822] border border-[#222736] w-full max-w-lg rounded-2xl p-6 relative">
-            <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-base font-bold text-amber-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-user-shield"></i> ระบบจัดการหลังบ้าน (Admin Panel)</h3>
-            
+    <!-- Modal 3: Admin Management -->
+    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#0f1420] border border-amber-500/30 w-full max-w-lg rounded-3xl p-6 relative">
+            <button onclick="closeModal('adminModal')" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-base font-bold text-amber-400 mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> ระบบจัดการหลังบ้าน (Admin Stock)</h3>
             <form onsubmit="addStockItem(event)" class="space-y-3">
-                <p class="text-xs font-bold text-gray-300">เติม Stock รหัสไอดีเกมเข้าระบบ:</p>
                 <div class="grid grid-cols-2 gap-3">
-                    <input type="text" id="addGameTitle" placeholder="ชื่อเกม (เช่น Valorant)" required class="bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
-                    <input type="number" id="addPrice" placeholder="ราคา (บาท)" required class="bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
+                    <input type="text" id="addGameTitle" placeholder="ชื่อเกม" required class="bg-[#07090e] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+                    <input type="number" id="addPrice" placeholder="ราคา (บาท)" required class="bg-[#07090e] border border-white/10 rounded-xl p-2.5 text-xs text-white">
                 </div>
-                <input type="text" id="addAccUser" placeholder="Username / Email ของไอดีเกม" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
-                <input type="text" id="addAccPass" placeholder="Password ของไอดีเกม" required class="w-full bg-[#0b0e14] border border-[#222736] rounded-xl p-2 text-xs text-white">
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-2 rounded-xl text-xs transition">บันทึกสต็อกเข้าฐานข้อมูล</button>
+                <input type="text" id="addAccUser" placeholder="Username / Email" required class="w-full bg-[#07090e] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+                <input type="text" id="addAccPass" placeholder="Password" required class="w-full bg-[#07090e] border border-white/10 rounded-xl p-2.5 text-xs text-white">
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl text-xs transition">เพิ่มไอดีเข้าฐานข้อมูล</button>
             </form>
         </div>
     </div>
 
-    <!-- 4. MY HISTORY MODAL -->
-    <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-[#151822] border border-[#222736] w-full max-w-md rounded-2xl p-6 relative">
-            <button onclick="closeModal('historyModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-base font-bold text-white mb-4"><i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> ประวัติการสั่งซื้อของคุณ</h3>
+    <!-- Modal 4: Order History -->
+    <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#0f1420] border border-white/10 w-full max-w-md rounded-3xl p-6 relative">
+            <button onclick="closeModal('historyModal')" class="absolute top-5 right-5 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-box-open text-cyan-400"></i> ประวัติการซื้อไอดีเกม</h3>
             <div id="historyList" class="space-y-3 max-h-60 overflow-y-auto pr-1">
-                <div class="bg-[#0b0e14] p-3 rounded-xl border border-[#222736] text-xs">
-                    <span class="text-gray-400 block text-[10px]">ไอดีล่าสุดที่ซื้อ:</span>
+                <div class="bg-[#07090e] p-3.5 rounded-2xl border border-white/10 text-xs">
+                    <span class="text-gray-500 block text-[10px]">ไอดีล่าสุดที่ซื้อ:</span>
                     <p class="font-bold text-white">Valorant Radiant Ready</p>
                     <p class="font-mono text-emerald-400 text-[11px] mt-1">User: val_account_8922 | Pass: Pass#2026_Secure</p>
                 </div>
@@ -236,28 +366,35 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-[#151822] border-t border-[#222736] py-6 text-center text-xs text-gray-500">
-        © 2026 GAME STORE. Automated Platform with Supabase & Vercel.
+    <footer class="bg-[#07090e] border-t border-white/10 py-8 text-center text-xs text-gray-500">
+        © 2026 EAZY GAME STORE. Inspired design by MREasyShop & Cherax.
     </footer>
 
-    <!-- JavaScript Logic -->
+    <!-- JS Logics -->
     <script>
-        // -------------------------------------------------------------
-        // CONFIG SUPABASE (ใส่ URL และ Anon Key ของคุณตรงนี้)
-        // -------------------------------------------------------------
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL'; 
-        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        let supabaseClient = null;
-
-        if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        }
-
         let currentUser = null;
         let authMode = 'login';
-        let currentCheckoutItem = null;
 
-        // AUTH SYSTEM LOGIC
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterProducts() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = title.includes(input) ? 'flex' : 'none';
+            });
+        }
+
         function openAuthModal(mode) {
             switchAuthTab(mode);
             document.getElementById('authModal').classList.remove('hidden');
@@ -266,42 +403,22 @@
         function switchAuthTab(mode) {
             authMode = mode;
             if(mode === 'login') {
-                document.getElementById('tabLogin').className = "flex-1 pb-2 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500";
-                document.getElementById('tabRegister').className = "flex-1 pb-2 text-sm font-bold text-gray-400 border-b-2 border-transparent";
+                document.getElementById('tabLogin').className = "flex-1 pb-3 text-xs font-bold text-cyan-400 border-b-2 border-cyan-500";
+                document.getElementById('tabRegister').className = "flex-1 pb-3 text-xs font-bold text-gray-400 border-b-2 border-transparent";
                 document.getElementById('authSubmitBtn').innerText = "เข้าสู่ระบบ";
             } else {
-                document.getElementById('tabRegister').className = "flex-1 pb-2 text-sm font-bold text-indigo-400 border-b-2 border-indigo-500";
-                document.getElementById('tabLogin').className = "flex-1 pb-2 text-sm font-bold text-gray-400 border-b-2 border-transparent";
-                document.getElementById('authSubmitBtn').innerText = "ลงทะเบียนสมัครสมาชิก";
+                document.getElementById('tabRegister').className = "flex-1 pb-3 text-xs font-bold text-cyan-400 border-b-2 border-cyan-500";
+                document.getElementById('tabLogin').className = "flex-1 pb-3 text-xs font-bold text-gray-400 border-b-2 border-transparent";
+                document.getElementById('authSubmitBtn').innerText = "สมัครสมาชิก";
             }
         }
 
-        async function handleAuth(e) {
+        function handleAuth(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-
-            if (supabaseClient) {
-                if (authMode === 'register') {
-                    const { data, error } = await supabaseClient.auth.signUp({ email, password });
-                    if (error) alert("สมัครไม่สำเร็จ: " + error.message);
-                    else alert("สมัครสมาชิกเรียบร้อยแล้ว!");
-                } else {
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                    if (error) alert("เข้าสู่ระบบไม่สำเร็จ: " + error.message);
-                    else {
-                        currentUser = data.user;
-                        updateUI();
-                        closeModal('authModal');
-                    }
-                }
-            } else {
-                // Local Demo Fallback (หากยังไม่ได้ใส่ Key)
-                currentUser = { email: email, role: email.includes('admin') ? 'admin' : 'user' };
-                updateUI();
-                closeModal('authModal');
-                alert("ล็อกอินเข้าสู่ระบบ (Demo Mode) เรียบร้อยแล้ว!");
-            }
+            currentUser = { email: email, role: email.includes('admin') ? 'admin' : 'user' };
+            updateUI();
+            closeModal('authModal');
         }
 
         function updateUI() {
@@ -309,9 +426,7 @@
                 document.getElementById('guestNav').classList.add('hidden');
                 document.getElementById('userNav').classList.remove('hidden');
                 document.getElementById('userDisplayEmail').innerText = currentUser.email;
-
-                // Check Admin
-                if (currentUser.role === 'admin' || currentUser.email.includes('admin')) {
+                if (currentUser.role === 'admin') {
                     document.getElementById('adminNavBtn').classList.remove('hidden');
                 }
             } else {
@@ -321,20 +436,14 @@
             }
         }
 
-        function logout() {
-            currentUser = null;
-            updateUI();
-            alert("ออกจากระบบเรียบร้อยแล้ว");
-        }
+        function logout() { currentUser = null; updateUI(); }
 
-        // CHECKOUT & AUTO DELIVERY LOGIC
-        function startCheckout(name, price, stockCode) {
+        function startCheckout(name, price) {
             if (!currentUser) {
-                alert("กรุณาเข้าสู่ระบบก่อนทำการสั่งซื้อสินค้าครับ");
+                alert("กรุณาเข้าสู่ระบบก่อนซื้อสินค้าครับ");
                 openAuthModal('login');
                 return;
             }
-            currentCheckoutItem = { name, price, stockCode };
             document.getElementById('payItemTitle').innerText = name;
             document.getElementById('payPrice').innerText = '฿ ' + price;
             document.getElementById('payStep').classList.remove('hidden');
@@ -343,23 +452,14 @@
         }
 
         function confirmPayment() {
-            // Mock Auto-Dispatching Account
             document.getElementById('payStep').classList.add('hidden');
-            document.getElementById('dispenseUser').innerText = 'acc_' + Math.floor(Math.random() * 8999 + 1000);
-            document.getElementById('dispensePass').innerText = 'Pass#' + Math.floor(Math.random() * 8999 + 1000) + '_Ez';
             document.getElementById('resultStep').classList.remove('hidden');
         }
 
-        // ADMIN FUNCTIONS
         function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
         function openHistoryModal() { document.getElementById('historyModal').classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        function addStockItem(e) {
-            e.preventDefault();
-            alert("บันทึกคลังไอดีเกมเรียบร้อยแล้ว! (สต็อกใหม่พร้อมขายทันที)");
-            closeModal('adminModal');
-        }
+        function addStockItem(e) { e.preventDefault(); closeModal('adminModal'); alert("เพิ่มข้อมูลสำเร็จ!"); }
     </script>
 </body>
 </html>
